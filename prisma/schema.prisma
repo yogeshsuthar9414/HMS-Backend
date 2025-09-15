@@ -1,0 +1,204 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model app_module_mst {
+  id              Int               @id @default(autoincrement())
+  module_nm       String            @unique @db.VarChar(30)
+  description     String?           @db.VarChar(150)
+  is_active       Boolean           @default(true)
+  entry_by        Int?
+  entry_dt        DateTime?
+  update_by       Int?
+  update_dt       DateTime?
+  plan_module_dtl plan_module_dtl[]
+}
+
+model branch_mst {
+  id          Int         @id @default(autoincrement())
+  comp_id     Int
+  branch_cd   String      @unique @db.VarChar(20)
+  branch_nm   String      @db.VarChar(100)
+  address     String?     @db.VarChar(100)
+  city        String?     @db.VarChar(30)
+  state       String?     @db.VarChar(30)
+  country     String?     @db.VarChar(30)
+  pin_cd      String?     @db.VarChar(6)
+  mobile_no   String      @db.VarChar(10)
+  email_id    String      @db.VarChar(100)
+  lat         Decimal?    @db.Decimal(10, 6)
+  long        Decimal?    @db.Decimal(10, 6)
+  is_active   Boolean     @default(false)
+  entry_by    Int?
+  entry_dt    DateTime?
+  update_by   Int?
+  update_dt   DateTime?
+  company_mst company_mst @relation(fields: [comp_id], references: [id], onDelete: Cascade, map: "fk_comp_branch")
+}
+
+model company_mst {
+  id              Int              @id @default(autoincrement())
+  comp_cd         String           @db.VarChar(6)
+  comp_nm         String           @db.VarChar(100)
+  comp_type       comp_type
+  domain          String           @db.VarChar(100)
+  mobile_no       String           @db.VarChar(10)
+  email_id        String           @db.VarChar(100)
+  address_1       String           @db.VarChar(100)
+  address_2       String?          @db.VarChar(100)
+  city            String           @db.VarChar(30)
+  state           String           @db.VarChar(30)
+  country         String           @db.VarChar(30)
+  pin_cd          String           @db.VarChar(6)
+  is_active       Boolean          @default(false)
+  two_fa          Boolean          @default(false)
+  logo            String?
+  fav_icon        String?
+  logo_width      Int?
+  logo_height     Int?
+  is_sms          Boolean          @default(false)
+  sms_method      sms_method?
+  sms_url         String?
+  is_email        Boolean          @default(false)
+  smtp_host       String?          @db.VarChar(100)
+  smtp_port       String?          @db.VarChar(4)
+  smtp_tls        String?          @db.VarChar(1)
+  smtp_usernm     String?          @db.VarChar(30)
+  smtp_password   String?
+  smtp_from_email String?          @db.VarChar(100)
+  entry_by        Int?
+  entry_dt        DateTime?
+  update_by       Int?
+  update_dt       DateTime?
+  branch_mst      branch_mst[]
+  department_mst  department_mst[]
+  staff_mst       staff_mst[]
+
+  @@unique([comp_cd, domain])
+}
+
+model department_mst {
+  id          Int         @id @default(autoincrement())
+  comp_id     Int
+  depart_nm   String      @db.VarChar(30)
+  entry_by    Int?
+  entry_dt    DateTime?
+  update_by   Int?
+  update_dt   DateTime?
+  company_mst company_mst @relation(fields: [comp_id], references: [id], onDelete: Cascade, map: "fk_comp_department")
+  staff_mst   staff_mst[]
+}
+
+model plan_module_dtl {
+  id        Int @id @default(autoincrement())
+  plan_id   Int
+  module_id Int
+
+  plan_mst       plan_mst       @relation(fields: [plan_id], references: [id], onDelete: Cascade, map: "fk_plan")
+  app_module_mst app_module_mst @relation(fields: [module_id], references: [id], onDelete: Cascade, map: "fk_plan_module")
+}
+
+model plan_mst {
+  id              Int                @id @default(autoincrement())
+  plan_nm         String             @unique @db.VarChar(30)
+  price           Decimal            @db.Decimal
+  validate_type   plan_validate_type
+  validate_for    Int
+  features        Json? // e.g. { "patients": 500, "staff": 50 }
+  description     String             @db.VarChar(300)
+  is_active       Boolean            @default(true)
+  entry_by        Int?
+  entry_dt        DateTime?
+  update_by       Int?
+  update_dt       DateTime?
+  plan_module_dtl plan_module_dtl[]
+}
+
+model staff_mst {
+  id              Int            @id @default(autoincrement())
+  comp_id         Int
+  branch_id       Int?
+  full_nm         String         @db.VarChar(50)
+  gender          gender
+  dob             DateTime?
+  department      Int
+  join_dt         DateTime
+  profile_img     String?
+  entry_by        Int?
+  entry_dt        DateTime?
+  update_by       Int?
+  update_dt       DateTime?
+  email_id        String         @db.VarChar(100)
+  gauth_key       String?        @db.VarChar(80)
+  gauth_qr        String?
+  is_active       Boolean        @default(true)
+  is_auth_status  Boolean        @default(false)
+  is_lock         Boolean        @default(false)
+  is_login_access Boolean        @default(true)
+  is_temp_pass    Boolean        @default(true)
+  last_login_tm   DateTime?
+  last_pass_chng  DateTime?
+  lock_tm         DateTime?
+  login_atmp      Int?           @default(0)
+  mobile_no       String         @db.VarChar(10)
+  otp_atmp        Int            @default(0)
+  otp_cd          Int            @default(0)
+  otp_resend_atmp Int            @default(0)
+  otp_tm          DateTime?
+  password        String
+  role            staff_role
+  sessionId       String?
+  temp_gauth_key  String?        @db.VarChar(80)
+  temp_pass       Boolean        @default(true)
+  two_fac_type    two_fac_type   @default(null)
+  user_nm         String         @unique @db.VarChar(30)
+  department_mst  department_mst @relation(fields: [department], references: [id], map: "fk_comp_department_staff")
+  company_mst     company_mst    @relation(fields: [comp_id], references: [id], map: "fk_comp_staff")
+}
+
+enum comp_type {
+  P
+  G
+  T
+}
+
+enum gender {
+  M
+  F
+  O
+}
+
+enum plan_validate_type {
+  D
+  M
+  Y
+}
+
+enum sms_method {
+  POST
+  GET
+}
+
+enum staff_role {
+  SUP
+  ADM
+  MNG
+  RECP
+  DOC
+  NRS
+  LAB
+  PHR
+  ACC
+}
+
+enum two_fac_type {
+  GAUTH
+  OTP
+  null
+}

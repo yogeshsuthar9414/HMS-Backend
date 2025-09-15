@@ -1,0 +1,16 @@
+[2025-07-18T18:42:07.949Z] [INFO] [NestFactory]: Starting Nest application...
+[2025-07-18T18:42:08.000Z] [INFO] [InstanceLoader]: AppModule dependencies initialized
+[2025-07-18T18:42:08.002Z] [INFO] [InstanceLoader]: PassportModule dependencies initialized
+[2025-07-18T18:42:08.014Z] [INFO] [InstanceLoader]: WinstonModule dependencies initialized
+[2025-07-18T18:42:08.015Z] [INFO] [InstanceLoader]: ConfigHostModule dependencies initialized
+[2025-07-18T18:42:08.016Z] [INFO] [InstanceLoader]: StaffModule dependencies initialized
+[2025-07-18T18:42:08.017Z] [INFO] [InstanceLoader]: ConfigModule dependencies initialized
+[2025-07-18T18:42:08.020Z] [INFO] [InstanceLoader]: AuthModule dependencies initialized
+[2025-07-18T18:42:08.034Z] [INFO] [RoutesResolver]: AuthController {/auth}:
+[2025-07-18T18:42:08.040Z] [INFO] [RouterExplorer]: Mapped {/auth/login, POST} route
+[2025-07-18T18:42:08.040Z] [INFO] [RoutesResolver]: StaffController {/staff}:
+[2025-07-18T18:42:08.042Z] [INFO] [RouterExplorer]: Mapped {/staff, POST} route
+[2025-07-18T18:42:08.044Z] [INFO] [RouterExplorer]: Mapped {/staff, GET} route
+[2025-07-18T18:42:08.048Z] [INFO] [RouterExplorer]: Mapped {/staff/:id, PATCH} route
+[2025-07-18T18:42:08.050Z] [INFO] [RouterExplorer]: Mapped {/staff/:id, DELETE} route
+[2025-07-18T18:42:08.426Z] [INFO] [NestApplication]: Nest application successfully started
