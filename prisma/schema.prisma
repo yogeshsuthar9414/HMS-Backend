@@ -9,7 +9,7 @@ datasource db {
 }
 
 model app_module_mst {
-  id              Int               @id @default(autoincrement())
+  id              Int               @id @unique @default(autoincrement())
   module_nm       String            @unique @db.VarChar(30)
   description     String?           @db.VarChar(150)
   is_active       Boolean           @default(true)
@@ -21,7 +21,7 @@ model app_module_mst {
 }
 
 model branch_mst {
-  id          Int         @id @default(autoincrement())
+  id          Int         @id @unique @default(autoincrement())
   comp_id     Int
   branch_cd   String      @unique @db.VarChar(20)
   branch_nm   String      @db.VarChar(100)
@@ -30,8 +30,8 @@ model branch_mst {
   state       String?     @db.VarChar(30)
   country     String?     @db.VarChar(30)
   pin_cd      String?     @db.VarChar(6)
-  mobile_no   String      @db.VarChar(10)
-  email_id    String      @db.VarChar(100)
+  mobile_no   String      @unique @db.VarChar(10)
+  email_id    String      @unique @db.VarChar(100)
   lat         Decimal?    @db.Decimal(10, 6)
   long        Decimal?    @db.Decimal(10, 6)
   is_active   Boolean     @default(false)
@@ -43,13 +43,13 @@ model branch_mst {
 }
 
 model company_mst {
-  id              Int              @id @default(autoincrement())
+  id              Int              @id @unique @default(autoincrement())
   comp_cd         String           @db.VarChar(6)
   comp_nm         String           @db.VarChar(100)
   comp_type       comp_type
   domain          String           @db.VarChar(100)
-  mobile_no       String           @db.VarChar(10)
-  email_id        String           @db.VarChar(100)
+  mobile_no       String           @unique @db.VarChar(10)
+  email_id        String           @unique @db.VarChar(100)
   address_1       String           @db.VarChar(100)
   address_2       String?          @db.VarChar(100)
   city            String           @db.VarChar(30)
@@ -84,7 +84,7 @@ model company_mst {
 }
 
 model department_mst {
-  id          Int         @id @default(autoincrement())
+  id          Int         @id @unique @default(autoincrement())
   comp_id     Int
   depart_nm   String      @db.VarChar(30)
   entry_by    Int?
@@ -105,7 +105,7 @@ model plan_module_dtl {
 }
 
 model plan_mst {
-  id              Int                @id @default(autoincrement())
+  id              Int                @id @unique @default(autoincrement())
   plan_nm         String             @unique @db.VarChar(30)
   price           Decimal            @db.Decimal
   validate_type   plan_validate_type
@@ -121,7 +121,7 @@ model plan_mst {
 }
 
 model staff_mst {
-  id              Int            @id @default(autoincrement())
+  id              Int            @id @unique @default(autoincrement())
   comp_id         Int
   branch_id       Int?
   full_nm         String         @db.VarChar(50)
@@ -134,7 +134,7 @@ model staff_mst {
   entry_dt        DateTime?
   update_by       Int?
   update_dt       DateTime?
-  email_id        String         @db.VarChar(100)
+  email_id        String         @unique @db.VarChar(100)
   gauth_key       String?        @db.VarChar(80)
   gauth_qr        String?
   is_active       Boolean        @default(true)
@@ -146,7 +146,7 @@ model staff_mst {
   last_pass_chng  DateTime?
   lock_tm         DateTime?
   login_atmp      Int?           @default(0)
-  mobile_no       String         @db.VarChar(10)
+  mobile_no       String         @unique @db.VarChar(10)
   otp_atmp        Int            @default(0)
   otp_cd          Int            @default(0)
   otp_resend_atmp Int            @default(0)

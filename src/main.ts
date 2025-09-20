@@ -6,11 +6,16 @@ import { WinstonModule } from 'nest-winston';
 import { winstonLoggerConfig } from './common/logger/winston-logger';
 import { RolesGuard } from './common/guard/roles.guard';
 import { ValidationPipe } from '@nestjs/common';
+// import { StaffService } from './modules/staff/staff.service';
+import { HelperService } from './common/utils/helper/helper.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: WinstonModule.createLogger(winstonLoggerConfig),
   });
+
+  const dbService = app.get(HelperService);
+  console.log("bcyptPassword", await dbService.bcyptPassword("admin"));
 
 
   // Validate to request data
